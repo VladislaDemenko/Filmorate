@@ -34,7 +34,7 @@ public class FilmController {
     public Film updateFilm(@Valid @RequestBody Film film) {
         if (film.getId() == null || !films.containsKey(film.getId())) {
             log.warn("Попытка обновления несуществующего фильма с id: {}", film.getId());
-            throw new NoSuchElementException("Фильм с id " + film.getId() + " не найден");
+            throw new NoSuchElementException(String.format("Фильм с id %d не найден", film.getId()));
         }
         films.put(film.getId(), film);
         log.info("Обновлен фильм: {}", film);
