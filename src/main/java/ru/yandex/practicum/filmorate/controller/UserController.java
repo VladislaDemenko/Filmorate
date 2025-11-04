@@ -16,9 +16,9 @@ public class UserController {
     private Long currentId = 1L;
 
     @GetMapping
-    public Collection<User> getAllUsers() {
+    public List<User> getAllUsers() {
         log.info("Получен запрос на получение всех пользователей. Кол-во на данный момент: {}", users.size());
-        return users.values();
+        return new ArrayList<>(users.values());
     }
 
     @PostMapping
@@ -27,17 +27,17 @@ public class UserController {
         user.setId(currentId++);
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
-            log.info("Для пользователя с id {} установлено имя из логина{}: ", user.getId(), user.getLogin());
+            log.info("Для пользователя с id {} установлено имя из логина: {}", user.getId(), user.getLogin());
         }
         users.put(user.getId(), user);
         log.info("Добавлен новый пользователь: {}", user);
-        return  user;
+        return user;
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
         if (user.getId() == null || !users.containsKey(user.getId())) {
-            log.warn("Попытка обновления несуществующего пользовтеля с id: {}", user.getId());
+            log.warn("Попытка обновления несуществующего пользователя с id: {}", user.getId());
             throw new NoSuchElementException("Пользователь с id: " + user.getId() + " не найден");
         }
         if (user.getName() == null || user.getName().isBlank()) {
