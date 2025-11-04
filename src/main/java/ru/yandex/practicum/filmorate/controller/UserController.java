@@ -34,4 +34,18 @@ public class UserController {
         log.info("Добавлен новый пользователь: {}", user);
         return  user;
     }
+
+    @PutMapping
+    public User updateUser(@Valid @RequestBody User user) {
+        if (user.getId() == null || !users.containsKey(user.getId())) {
+            log.warn("Попытка обновления несуществующего пользовтеля с id: {}", user.getId());
+            throw new NoSuchElementException("Пользователь с id: " + user.getId() + " не найден");
+        }
+        if (user.getName() == null || user.getName().isBlank()) {
+            user.setName(user.getLogin());
+        }
+        users.put(user.getId(), user);
+        log.info("Обновлен пользователь {}", user);
+        return user;
+    }
 }
