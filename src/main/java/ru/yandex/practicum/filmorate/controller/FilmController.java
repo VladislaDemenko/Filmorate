@@ -16,9 +16,9 @@ public class FilmController {
     private Long currentId = 1L;
 
     @GetMapping
-    public Collection<Film> getAllFilms() {
+    public List<Film> getAllFilms() {
         log.info("Получен запрос на получение всех фильмов. Количество на момент запроса: {}", films.size());
-        return films.values();
+        return new ArrayList<>(films.values());
     }
 
     @PostMapping
