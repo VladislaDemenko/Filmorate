@@ -42,7 +42,7 @@ class FilmValidationTest {
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertFalse(violations.isEmpty(), "Фильм с пустым названием должен быть отклонен");
-        assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains("Название фильма не может быть пустым")));
+        assertTrue(violations.stream().anyMatch(violation -> violation.getMessage().contains("Название фильма не может быть пустым")));
     }
 
     @Test
@@ -55,7 +55,7 @@ class FilmValidationTest {
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertFalse(violations.isEmpty(), "Фильм с описанием длиннее 200 символов должен быть отклонен");
-        assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains("Максимальная длина описания — 200 символов")));
+        assertTrue(violations.stream().anyMatch(violation -> violation.getMessage().contains("Максимальная длина описания — 200 символов")));
     }
 
     @Test
@@ -68,7 +68,7 @@ class FilmValidationTest {
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertFalse(violations.isEmpty(), "Фильм с отрицательной продолжительностью должен быть отклонен");
-        assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains("Продолжительность фильма должна быть положительным числом")));
+        assertTrue(violations.stream().anyMatch(violation -> violation.getMessage().contains("Продолжительность фильма должна быть положительным числом")));
     }
 
     @Test
