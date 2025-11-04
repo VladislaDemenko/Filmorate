@@ -29,4 +29,15 @@ public class FilmController {
         log.info("Добавлен новый фильм: {}", film);
         return film;
     }
+
+    @PutMapping
+    public Film updateFilm(@Valid @RequestBody Film film) {
+        if (film.getId() == null || !films.containsKey(film.getId())) {
+            log.warn("Попытка обновления несуществующего фильма с id: {}", film.getId());
+            throw new NoSuchElementException("Фильм с id " + film.getId() + " не найден");
+        }
+        films.put(film.getId(), film);
+        log.info("Обновлен фильм: {}", film);
+        return film;
+    }
 }
