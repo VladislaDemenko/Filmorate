@@ -6,7 +6,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import javax.validation.ConstraintViolationException;
 import java.util.NoSuchElementException;
 
@@ -26,6 +25,13 @@ public class ErrorHandler {
     public ErrorResponse handleNotFoundException(NoSuchElementException e) {
         log.warn("Объект не найден: {}", e.getMessage());
         return new ErrorResponse("Объект не найден", e.getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIllegalArgumentException(IllegalArgumentException e) {
+        log.warn("Некорректный запрос: {}", e.getMessage());
+        return new ErrorResponse("Некорректный запрос", e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
