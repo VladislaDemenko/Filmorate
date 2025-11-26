@@ -15,6 +15,11 @@ import java.util.NoSuchElementException;
 @Slf4j
 @RequiredArgsConstructor
 public class UserController {
+    private static final String USER_ID_PATH = "/{id}";
+    private static final String FRIENDS_PATH = USER_ID_PATH + "/friends";
+    private static final String FRIEND_ID_PATH = FRIENDS_PATH + "/{friendId}";
+    private static final String COMMON_FRIENDS_PATH = FRIENDS_PATH + "/common/{otherId}";
+
     private final UserService userService;
 
     @GetMapping
@@ -22,7 +27,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(USER_ID_PATH)
     public User getUserById(@PathVariable Long id) {
         log.info("Получен запрос на получение пользователя с id: {}", id);
         return userService.getUserById(id);
@@ -41,25 +46,25 @@ public class UserController {
         return userService.updateUser(user);
     }
 
-    @PutMapping("/{id}/friends/{friendId}")
+    @PutMapping(FRIEND_ID_PATH)
     public void addFriend(@PathVariable Long id, @PathVariable Long friendId) {
         log.info("Получен запрос на добавление в друзья: пользователь {} добавляет пользователя {}", id, friendId);
         userService.addFriend(id, friendId);
     }
 
-    @DeleteMapping("/{id}/friends/{friendId}")
+    @DeleteMapping(FRIEND_ID_PATH)
     public void removeFriend(@PathVariable Long id, @PathVariable Long friendId) {
         log.info("Получен запрос на удаление из друзей: пользователь {} удаляет пользователя {}", id, friendId);
         userService.removeFriend(id, friendId);
     }
 
-    @GetMapping("/{id}/friends")
+    @GetMapping(FRIENDS_PATH)
     public List<User> getFriends(@PathVariable Long id) {
         log.info("Получен запрос на получение списка друзей пользователя с id: {}", id);
         return userService.getFriends(id);
     }
 
-    @GetMapping("/{id}/friends/common/{otherId}")
+    @GetMapping(COMMON_FRIENDS_PATH)
     public List<User> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) {
         log.info("Получен запрос на получение общих друзей пользователей {} и {}", id, otherId);
         return userService.getCommonFriends(id, otherId);
