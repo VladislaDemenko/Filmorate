@@ -15,6 +15,10 @@ import java.util.NoSuchElementException;
 @Slf4j
 @RequiredArgsConstructor
 public class FilmController {
+    private static final String FILM_ID_PATH = "/{id}";
+    private static final String LIKE_PATH = FILM_ID_PATH + "/like/{userId}";
+    private static final String POPULAR_PATH = "/popular";
+
     private final FilmService filmService;
 
     @GetMapping
@@ -22,7 +26,7 @@ public class FilmController {
         return filmService.getAllFilms();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(FILM_ID_PATH)
     public Film getFilmById(@PathVariable Long id) {
         log.info("Получен запрос на получение фильма с id: {}", id);
         return filmService.getFilmById(id);
@@ -41,19 +45,19 @@ public class FilmController {
         return filmService.updateFilm(film);
     }
 
-    @PutMapping("/{id}/like/{userId}")
+    @PutMapping(LIKE_PATH)
     public void addLike(@PathVariable Long id, @PathVariable Long userId) {
         log.info("Получен запрос на добавление лайка фильму {} от пользователя {}", id, userId);
         filmService.addLike(id, userId);
     }
 
-    @DeleteMapping("/{id}/like/{userId}")
+    @DeleteMapping(LIKE_PATH)
     public void removeLike(@PathVariable Long id, @PathVariable Long userId) {
         log.info("Получен запрос на удаление лайка с фильма {} от пользователя {}", id, userId);
         filmService.removeLike(id, userId);
     }
 
-    @GetMapping("/popular")
+    @GetMapping(POPULAR_PATH)
     public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") Integer count) {
         log.info("Получен запрос на получение {} популярных фильмов", count);
         return filmService.getPopularFilms(count);
