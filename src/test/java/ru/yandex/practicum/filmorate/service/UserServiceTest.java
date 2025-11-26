@@ -62,7 +62,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenAddingFriendToNonExistentUser() {
+    void shouldThrowNonExistentUser() {
         when(userStorage.getById(1L)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () -> userService.addFriend(1L, 2L));
@@ -111,7 +111,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldReturnEmptyListWhenNoCommonFriends() {
+    void returnNoCommonFriends() {
         when(userStorage.getById(1L)).thenReturn(Optional.of(user1));
         when(userStorage.getById(2L)).thenReturn(Optional.of(user2));
 
