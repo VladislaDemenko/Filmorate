@@ -62,14 +62,14 @@ class FilmServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenAddingLikeToNonExistentFilm() {
+    void likeToNonExistentFilm() {
         when(filmStorage.getById(1L)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () -> filmService.addLike(1L, 1L));
     }
 
     @Test
-    void shouldThrowExceptionWhenAddingLikeFromNonExistentUser() {
+    void likeFromNonExistentUser() {
         when(filmStorage.getById(1L)).thenReturn(Optional.of(film));
         when(userStorage.existsById(1L)).thenReturn(false);
 
@@ -89,7 +89,7 @@ class FilmServiceTest {
     }
 
     @Test
-    void shouldGetPopularFilmsWithDefaultCount() {
+    void filmsWithDefaultCount() {
         when(filmStorage.getAll()).thenReturn(Collections.emptyList());
 
         List<Film> popularFilms = filmService.getPopularFilms(null);
