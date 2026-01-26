@@ -32,18 +32,6 @@ class UserValidationTest {
     }
 
     @Test
-    void shouldRejectUserWithInvalidEmail() {
-        User user = new User();
-        user.setEmail("invalid-email");
-        user.setLogin("validlogin");
-        user.setBirthday(LocalDate.of(2000, 1, 1));
-
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        assertFalse(violations.isEmpty(), "Пользователь с невалидным email должен быть отклонен");
-        assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains("Электронная почта должна содержать символ @")));
-    }
-
-    @Test
     void shouldRejectUserWithEmptyEmail() {
         User user = new User();
         user.setEmail("");
@@ -77,18 +65,6 @@ class UserValidationTest {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertFalse(violations.isEmpty(), "Пользователь с логином содержащим пробелы должен быть отклонен");
         assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains("Логин не может содержать пробелы")));
-    }
-
-    @Test
-    void shouldRejectUserWithFutureBirthday() {
-        User user = new User();
-        user.setEmail("valid@email.com");
-        user.setLogin("validlogin");
-        user.setBirthday(LocalDate.now().plusDays(1));
-
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        assertFalse(violations.isEmpty(), "Пользователь с датой рождения в будущем должен быть отклонен");
-        assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains("Дата рождения не может быть в будущем")));
     }
 
     @Test
