@@ -45,10 +45,18 @@ public class UserService {
     public void addFriend(Long userId, Long friendId) {
         getUserById(userId);
         getUserById(friendId);
+
+        // Проверяем, не пытается ли пользователь добавить самого себя в друзья
+        if (userId.equals(friendId)) {
+            throw new IllegalArgumentException("Пользователь не может добавить самого себя в друзья");
+        }
+
         userStorage.addFriend(userId, friendId);
     }
 
     public void removeFriend(Long userId, Long friendId) {
+        getUserById(userId);
+        getUserById(friendId);
         userStorage.removeFriend(userId, friendId);
     }
 
