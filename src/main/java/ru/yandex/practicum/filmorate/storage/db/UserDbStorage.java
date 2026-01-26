@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Repository
@@ -74,7 +75,7 @@ public class UserDbStorage implements UserStorage {
                 user.getId());
 
         if (rowsUpdated == 0) {
-            throw new RuntimeException("Пользователь с id " + user.getId() + " не найден");
+            throw new NoSuchElementException("Пользователь с id " + user.getId() + " не найден");
         }
 
         log.info("Обновлен пользователь с id: {}", user.getId());
@@ -84,7 +85,12 @@ public class UserDbStorage implements UserStorage {
     @Override
     public void deleteUser(Long id) {
         String sql = "DELETE FROM users WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+        int rowsDeleted = jdbcTemplate.update(sql, id);
+
+        if (rowsDeleted == 0) {
+            throw new NoSuchElementException("Пользователь с id " + id + " не найден");
+        }
+
         log.info("Удален пользователь с id: {}", id);
     }
 
@@ -98,7 +104,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public void addFriend(Long userId, Long friendId) {
-        String sql = "INSERT INTO friendship (user_id, friend_id, status) VALUES (?, ?, 'PENDING')";
+        String sql = "INSERT INTO friendship (user_id, friend_id) VALUES (?, ?)";
         jdbcTemplate.update(sql, userId, friendId);
         log.info("Пользователь {} добавил в друзья пользователя {}", userId, friendId);
     }
@@ -107,7 +113,7 @@ public class UserDbStorage implements UserStorage {
     public void removeFriend(Long userId, Long friendId) {
         String sql = "DELETE FROM friendship WHERE user_id = ? AND friend_id = ?";
         jdbcTemplate.update(sql, userId, friendId);
-        log.info("Пользователь {} удалил из друзей пользователя {}", userId, friendId);
+        log.info("Запрос на удаление друга {} у пользователя {}", friendId, userId);
     }
 
     @Override
