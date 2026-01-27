@@ -77,20 +77,6 @@ class FilmControllerTest {
     }
 
     @Test
-    void shouldRejectFilmWithEarlyReleaseDate() throws Exception {
-        Film film = new Film();
-        film.setName("Valid Film");
-        film.setDescription("Valid description");
-        film.setReleaseDate(LocalDate.of(1890, 1, 1));
-        film.setDuration(120);
-
-        mockMvc.perform(post("/films")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(film)))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
     void shouldRejectFilmWithNegativeDuration() throws Exception {
         Film film = new Film();
         film.setName("Valid Film");

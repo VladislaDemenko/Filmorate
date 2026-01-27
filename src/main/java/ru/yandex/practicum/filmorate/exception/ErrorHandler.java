@@ -21,6 +21,13 @@ public class ErrorHandler {
         return new ErrorResponse("Ошибка валидации данных", e.getMessage());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIllegalArgumentException(IllegalArgumentException e) {
+        log.warn("Некорректные данные: {}", e.getMessage());
+        return new ErrorResponse("Некорректные данные", e.getMessage());
+    }
+
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(NoSuchElementException e) {

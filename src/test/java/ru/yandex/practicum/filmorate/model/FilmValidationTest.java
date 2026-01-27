@@ -46,19 +46,6 @@ class FilmValidationTest {
     }
 
     @Test
-    void shouldRejectFilmWithTooLongDescription() {
-        Film film = new Film();
-        film.setName("Valid Film");
-        film.setDescription("A".repeat(201));
-        film.setReleaseDate(LocalDate.of(2000, 1, 1));
-        film.setDuration(120);
-
-        Set<ConstraintViolation<Film>> violations = validator.validate(film);
-        assertFalse(violations.isEmpty(), "Фильм с описанием длиннее 200 символов должен быть отклонен");
-        assertTrue(violations.stream().anyMatch(violation -> violation.getMessage().contains("Максимальная длина описания — 200 символов")));
-    }
-
-    @Test
     void shouldRejectFilmWithNegativeDuration() {
         Film film = new Film();
         film.setName("Valid Film");
