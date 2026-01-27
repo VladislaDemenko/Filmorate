@@ -27,6 +27,8 @@ public class GenreController {
     public Genre getGenreById(@PathVariable Long id) {
         log.info("Получен запрос на получение жанра с id: {}", id);
         return genreStorage.getGenreById(id)
-                .orElseThrow(() -> new NoSuchElementException("Жанр с id " + id + " не найден"));
+                .orElseThrow(() -> new NoSuchElementException(
+                        String.format("Жанр с id %d не найден", id)
+                ));
     }
 }
